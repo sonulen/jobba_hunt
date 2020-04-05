@@ -1,40 +1,65 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.views import View
 
 
 class MainPageView(View):
-    template_name = "main.html"
+    template_name = "jobs/main.html"
 
     def get(self, request):
-        return HttpResponse(self.template_name)
+        return render(
+            request,
+            self.template_name,
+            context={
+            }
+        )
 
 
-class VacaniesPageView(View):
-    template_name = "vacancies.html"
+class VacanciesPageView(View):
+    template_name = "jobs/vacancies.html"
 
     def get(self, request):
-        return HttpResponse(self.template_name)
+        return render(
+            request,
+            self.template_name,
+            context={
+            }
+        )
 
 
 class SpecializationPageView(View):
-    template_name = "specialization.html"
+    template_name = "jobs/specialization.html"
 
     def get(self, request, specialization: str):
-        return HttpResponse(self.template_name + " " + specialization)
+        return render(
+            request,
+            self.template_name,
+            context={
+            }
+        )
 
 
 class CompanyPageView(View):
-    template_name = "company.html"
+    template_name = "jobs/company.html"
 
     def get(self, request, id: int):
-        return HttpResponse(self.template_name)
+        return render(
+            request,
+            self.template_name,
+            context={
+            }
+        )
 
 
 class JobPageView(View):
-    template_name = "job.html"
+    template_name = "jobs/job.html"
 
     def get(self, request, id: int):
-        return HttpResponse(self.template_name)
+        return render(
+            request,
+            self.template_name,
+            context={
+            }
+        )
 
 
 def custom_404(request, exception):
