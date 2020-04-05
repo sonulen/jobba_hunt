@@ -40,6 +40,8 @@ class SpecializationPageView(View):
             request,
             self.template_name,
             context={
+                "specialization": Specialty.objects.filter(code=specialization).first(),
+                "vacancies": Vacancy.objects.filter(specialty__code=specialization).all().order_by('-published_at')
             }
         )
 
