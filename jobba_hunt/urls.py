@@ -18,6 +18,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import re_path, path
 from django.views.generic.base import RedirectView
+from jobs.views import (
+    MainPageView,
+    VacaniesPageView,
+    SpecializationPageView,
+    CompanyPageView,
+    JobPageView
+)
 
 from jobs.views import (
     custom_404
@@ -26,7 +33,13 @@ from jobs.views import (
 favicon_view = RedirectView.as_view(
     url=settings.STATIC_URL + '/favicon.ico', permanent=True)
 
+
 urlpatterns = [
     re_path(r'^favicon\.ico$', favicon_view),
+    path('', MainPageView.as_view(), name='main'),
     path('admin/', admin.site.urls),
+    path('vacancies/', VacaniesPageView.as_view(), name='vacancies'),
+    path('jobs/cat/<str:specialization>/', SpecializationPageView.as_view(), name='specialization_detail'),
+    path('companies/<int:id>/', CompanyPageView.as_view(), name='company_detail'),
+    path('jobs/<int:id>/', JobPageView.as_view(), name='job_detail'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
