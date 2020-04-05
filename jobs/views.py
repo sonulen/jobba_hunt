@@ -67,6 +67,19 @@ class CompanyPageView(View):
         )
 
 
+class AllCompaniesPageView(View):
+    template_name = "jobs/all_companies.html"
+
+    def get(self, request):
+        return render(
+            request,
+            self.template_name,
+            context={
+                "companies": Company.objects.all()
+            }
+        )
+
+
 class JobPageView(View):
     template_name = "jobs/job.html"
 

@@ -23,7 +23,8 @@ from jobs.views import (
     VacanciesPageView,
     SpecializationPageView,
     CompanyPageView,
-    JobPageView
+    AllCompaniesPageView,
+    JobPageView,
 )
 
 from jobs.views import (
@@ -40,6 +41,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('vacancies/', VacanciesPageView.as_view(), name='vacancies'),
     path('jobs/cat/<str:specialization>/', SpecializationPageView.as_view(), name='specialization_detail'),
+    path('companies/', AllCompaniesPageView.as_view(), name='companies'),
     path('companies/<int:id>/', CompanyPageView.as_view(), name='company_detail'),
     path('jobs/<int:id>/', JobPageView.as_view(), name='job_detail'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

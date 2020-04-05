@@ -1,0 +1,29 @@
+{% extends 'base_with_menu.html' %}
+{% block content %}
+
+{% load static %}
+
+<main class="container mt-3">
+
+    <section class="my-5 pt-3">
+        <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
+        <div class="row mb-4">
+            {% for company in companies %}
+            <div class="col-6 col-md-6 col-lg-3">
+                <div class="card pt-5 text-center mb-4">
+                    <a href="{% url 'company_detail' company.pk %}"><img class="mx-auto d-block"
+                            src="https://place-hold.it/150x80" width="150" height="80" alt=""></a>
+                    <div class="card-body">
+                        <p class="card-text mb-2">{{ company.name|title }}</p>
+                        <p class="card-text"><a
+                                href="{% url 'company_detail' company.pk %}">{{ company.vacancies.count }} вакансии</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+{% endblock %}
