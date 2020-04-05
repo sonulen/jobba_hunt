@@ -1,6 +1,8 @@
 {% extends 'base_with_menu.html' %}
 {% block content %}
 
+{% load static %}
+
 <main class="container mt-3">
     <section>
         <h1 class="h1 text-center mx-auto mt-4 py-5"><strong>Вакансии для <br>Junior-разработчиков</strong></h1>
@@ -29,164 +31,43 @@
 
     <section class="mt-5 pt-3">
         <h2 class="h2 font-weight-normal text-center mb-5">Вакансии по рубрикам</h2>
-        <div class="row mb-0">
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
-                    <div class="card-body">
-                        <p class="card-text mb-2">Фронтенд</p>
-                        <p class="card-text"><a href="#">5 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
-                    <div class="card-body">
-                        <p class="card-text mb-2">Бэкенд</p>
-                        <p class="card-text"><a href="#">3 вакансии</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
-                    <div class="card-body">
-                        <p class="card-text mb-2">Геймдев</p>
-                        <p class="card-text"><a href="#">5 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
-                    <div class="card-body">
-                        <p class="card-text mb-2">Девопс</p>
-                        <p class="card-text"><a href="#">7 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row mb-4">
+            {% for specialty in specialties %}
             <div class="col-6 col-md-6 col-lg-3">
                 <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
+                    <img class="mx-auto d-block" src="{% static "specialties/specty_" %}{{ specialty.code }}.png"
+                        width="80" height="80" alt="">
                     <div class="card-body">
-                        <p class="card-text mb-2">Дизайн</p>
-                        <p class="card-text"><a href="#">2 вакансии</a></p>
+                        <p class="card-text mb-2">{{ specialty.title }}</p>
+                        <p class="card-text"><a
+                                href="{% url 'specialization_detail' specialty.code %}">{{ specialty.vacancies.count }}
+                                вакансий</a></p>
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
-                    <div class="card-body">
-                        <p class="card-text mb-2">Бэкенд</p>
-                        <p class="card-text"><a href="#">1 вакансия</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
-                    <div class="card-body">
-                        <p class="card-text mb-2">Менеджмент</p>
-                        <p class="card-text"><a href="#">3 вакансии</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <img class="mx-auto d-block" src="https://place-hold.it/80x80" width="80" height="80" alt="">
-                    <div class="card-body">
-                        <p class="card-text mb-2">Тестирование</p>
-                        <p class="card-text"><a href="#">5 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
     <section class="my-5 pt-3">
         <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
-        <div class="row mb-0">
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">5 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">3 вакансии</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">5 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-4 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">7 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row mb-4">
+            {% for company in companies %}
             <div class="col-6 col-md-6 col-lg-3">
                 <div class="card pt-5 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
+                    <a href="{% url 'company_detail' company.pk %}"><img class="mx-auto d-block"
+                            src="https://place-hold.it/150x80" width="150" height="80" alt=""></a>
                     <div class="card-body">
-                        <p class="card-text"><a href="#">2 вакансии</a></p>
+                        <p class="card-text mb-2">{{ company.name|title }}</p>
+                        <p class="card-text"><a
+                                href="{% url 'company_detail' company.pk %}">{{ company.vacancies.count }} вакансии</a>
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-5 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">1 вакансия</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-5 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">3 вакансии</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card pt-5 text-center mb-4">
-                    <a href="#"><img class="mx-auto d-block" src="https://place-hold.it/150x80" width="150" height="80"
-                            alt=""></a>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">5 вакансий</a></p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 </main>
-
 
 {% endblock %}

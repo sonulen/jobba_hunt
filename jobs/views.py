@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.views import View
+from jobs.models import (
+    Specialty, Company
+)
 
 
 class MainPageView(View):
@@ -10,6 +13,8 @@ class MainPageView(View):
             request,
             self.template_name,
             context={
+                "specialties": Specialty.objects.all()[:8],
+                "companies": Company.objects.all()
             }
         )
 
