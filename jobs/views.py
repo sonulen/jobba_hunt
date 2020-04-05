@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from django.views import View
 from jobs.models import (
     Specialty, Company, Vacancy
@@ -36,6 +37,9 @@ class SpecializationPageView(View):
     template_name = "jobs/specialization.html"
 
     def get(self, request, specialization: str):
+        if Specialty.objects.filter(code=specialization).first() == None:
+            raise Http404
+
         return render(
             request,
             self.template_name,
@@ -50,10 +54,15 @@ class CompanyPageView(View):
     template_name = "jobs/company.html"
 
     def get(self, request, id: int):
+        if Company.objects.filter(pk=id).first() == None:
+            raise Http404
+
         return render(
             request,
             self.template_name,
             context={
+                "company": Company.objects.filter(pk=id).first(),
+                "vacancies": Vacancy.objects.filter(company__pk=id).all().order_by('-published_at')
             }
         )
 
