@@ -1,0 +1,8 @@
+{% extends 'jobs/base_with_menu_and_vacancies_list.html' %}
+{% block header %}
+<div class="text-center">
+    <img src="https://place-hold.it/130x80" width="130" height="80" alt="">
+</div>
+<h1 class="h1 text-center mx-auto mt-0 pt-1" style="font-size: 70px;"><strong> {{ company.name|title }}</strong></h1>
+<p class="text-center pt-1">Компания, {{ vacancies.count }} вакансий</p>
+{% endblock %}

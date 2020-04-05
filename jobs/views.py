@@ -1,40 +1,103 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
+from django.http import Http404
 from django.views import View
+from jobs.models import (
+    Specialty, Company, Vacancy
+)
 
 
 class MainPageView(View):
-    template_name = "main.html"
+    template_name = "jobs/main.html"
 
     def get(self, request):
-        return HttpResponse(self.template_name)
+        return render(
+            request,
+            self.template_name,
+            context={
+                "specialties": Specialty.objects.all()[:8],
+                "companies": Company.objects.all()
+            }
+        )
 
 
-class VacaniesPageView(View):
-    template_name = "vacancies.html"
+class VacanciesPageView(View):
+    template_name = "jobs/vacancies.html"
 
     def get(self, request):
-        return HttpResponse(self.template_name)
+        return render(
+            request,
+            self.template_name,
+            context={
+                "vacancies": Vacancy.objects.all().order_by('-published_at')
+            }
+        )
 
 
 class SpecializationPageView(View):
-    template_name = "specialization.html"
+    template_name = "jobs/specialization.html"
 
     def get(self, request, specialization: str):
-        return HttpResponse(self.template_name + " " + specialization)
+        if Specialty.objects.filter(code=specialization).first() == None:
+            raise Http404
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                "specialization": Specialty.objects.filter(code=specialization).first(),
+                "vacancies": Vacancy.objects.filter(specialty__code=specialization).all().order_by('-published_at')
+            }
+        )
 
 
 class CompanyPageView(View):
-    template_name = "company.html"
+    template_name = "jobs/company.html"
 
     def get(self, request, id: int):
-        return HttpResponse(self.template_name)
+        if Company.objects.filter(pk=id).first() == None:
+            raise Http404
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                "company": Company.objects.filter(pk=id).first(),
+                "vacancies": Vacancy.objects.filter(company__pk=id).all().order_by('-published_at')
+            }
+        )
+
+
+class AllCompaniesPageView(View):
+    template_name = "jobs/all_companies.html"
+
+    def get(self, request):
+        return render(
+            request,
+            self.template_name,
+            context={
+                "companies": Company.objects.all()
+            }
+        )
 
 
 class JobPageView(View):
-    template_name = "job.html"
+    template_name = "jobs/job.html"
 
     def get(self, request, id: int):
-        return HttpResponse(self.template_name)
+        print(id)
+
+        if Vacancy.objects.filter(pk=id).first() == None:
+            raise Http404
+
+        print(Vacancy.objects.filter(pk=id).first().title)
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                "vacancy": Vacancy.objects.filter(pk=id).first()
+            }
+        )
 
 
 def custom_404(request, exception):

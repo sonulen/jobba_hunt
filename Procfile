@@ -1,0 +1,1 @@
+web: gunicorn jobba_hunt.wsgi

@@ -1,0 +1,6 @@
+{% extends 'jobs/base_with_menu_and_vacancies_list.html' %}
+{% block header %}
+<h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;">
+    <strong>{{ specialization.title|title }}</strong></h1>
+<p class="text-center pt-1"> {{ vacancies.count }} вакансий</p>
+{% endblock %}
