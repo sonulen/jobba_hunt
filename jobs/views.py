@@ -84,12 +84,8 @@ class JobPageView(View):
     template_name = "jobs/job.html"
 
     def get(self, request, id: int):
-        print(id)
-
         if Vacancy.objects.filter(pk=id).first() == None:
             raise Http404
-
-        print(Vacancy.objects.filter(pk=id).first().title)
 
         return render(
             request,
