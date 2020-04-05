@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from jobs.models import (
-    Specialty, Company
+    Specialty, Company, Vacancy
 )
 
 
@@ -27,6 +27,7 @@ class VacanciesPageView(View):
             request,
             self.template_name,
             context={
+                "vacancies": Vacancy.objects.all().order_by('-published_at')
             }
         )
 
