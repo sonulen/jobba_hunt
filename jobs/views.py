@@ -1,12 +1,13 @@
-from django.shortcuts import render
 from django.http import Http404
+from django.shortcuts import render
 from django.views import View
+
 from jobs.models import (
     Specialty, Company, Vacancy
 )
 
 
-class MainPageView(View):
+class MainView(View):
     template_name = "jobs/main.html"
 
     def get(self, request):
@@ -14,13 +15,13 @@ class MainPageView(View):
             request,
             self.template_name,
             context={
-                "specialties": Specialty.objects.all()[:8],
+                "specialties": Specialty.objects.all(),
                 "companies": Company.objects.all()
             }
         )
 
 
-class VacanciesPageView(View):
+class VacanciesView(View):
     template_name = "jobs/vacancies.html"
 
     def get(self, request):
@@ -33,41 +34,44 @@ class VacanciesPageView(View):
         )
 
 
-class SpecializationPageView(View):
+class SpecializationView(View):
     template_name = "jobs/specialization.html"
 
     def get(self, request, specialization: str):
-        if Specialty.objects.filter(code=specialization).first() == None:
+        specialization = Specialty.objects.filter(code=specialization).first()
+
+        if specialization == None:
             raise Http404
 
         return render(
             request,
             self.template_name,
             context={
-                "specialization": Specialty.objects.filter(code=specialization).first(),
+                "specialization": specialization,
                 "vacancies": Vacancy.objects.filter(specialty__code=specialization).all().order_by('-published_at')
             }
         )
 
 
-class CompanyPageView(View):
+class CompanyView(View):
     template_name = "jobs/company.html"
 
     def get(self, request, id: int):
-        if Company.objects.filter(pk=id).first() == None:
+        company = Company.objects.filter(pk=id).first()
+        if company == None:
             raise Http404
 
         return render(
             request,
             self.template_name,
             context={
-                "company": Company.objects.filter(pk=id).first(),
+                "company": company,
                 "vacancies": Vacancy.objects.filter(company__pk=id).all().order_by('-published_at')
             }
         )
 
 
-class AllCompaniesPageView(View):
+class CompaniesView(View):
     template_name = "jobs/all_companies.html"
 
     def get(self, request):
@@ -80,11 +84,12 @@ class AllCompaniesPageView(View):
         )
 
 
-class JobPageView(View):
+class JobView(View):
     template_name = "jobs/job.html"
 
     def get(self, request, id: int):
-        if Vacancy.objects.filter(pk=id).first() == None:
+        vacancy = Vacancy.objects.filter(pk=id).first()
+        if vacancy == None:
             raise Http404
 
         return render(
