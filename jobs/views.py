@@ -38,16 +38,16 @@ class SpecializationView(View):
     template_name = "jobs/specialization.html"
 
     def get(self, request, specialization: str):
-        specialization = Specialty.objects.filter(code=specialization).first()
+        selected_specialization = Specialty.objects.filter(code=specialization).first()
 
-        if specialization == None:
+        if selected_specialization == None:
             raise Http404
 
         return render(
             request,
             self.template_name,
             context={
-                "specialization": specialization,
+                "specialization": selected_specialization,
                 "vacancies": Vacancy.objects.filter(specialty__code=specialization).all().order_by('-published_at')
             }
         )
@@ -96,7 +96,7 @@ class JobView(View):
             request,
             self.template_name,
             context={
-                "vacancy": Vacancy.objects.filter(pk=id).first()
+                "vacancy": vacancy
             }
         )
 
