@@ -23,15 +23,18 @@ from jobs.views import (
     CompaniesView,
     CompanyView,
     custom_404,
-    JobResponseView,
     JobView,
     MainView,
     SpecializationView,
+    VacanciesView,
+)
+
+from accounts.views import (
+    JobResponseView,
     UserCompanyJob,
     UserCompanyVacancies,
     UserCompanyView,
     UserResumeView,
-    VacanciesView,
 )
 
 handler404 = custom_404

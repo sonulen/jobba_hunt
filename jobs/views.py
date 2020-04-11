@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.views import View
 
 from jobs.models import (
@@ -70,13 +70,6 @@ class SpecializationView(View):
         )
 
 
-class JobResponseView(View):
-    template_name = "job_response.html"
-
-    def get(self, request):
-        return HttpResponse(self.template_name)
-
-
 class CompaniesView(View):
     template_name = "jobs/all_companies.html"
 
@@ -106,34 +99,6 @@ class CompanyView(View):
                 "vacancies": Vacancy.objects.filter(company__pk=id).all().order_by('-published_at')
             }
         )
-
-
-class UserResumeView(View):
-    template_name = "user_resume.html"
-
-    def get(self, request):
-        return HttpResponse(self.template_name)
-
-
-class UserCompanyView(View):
-    template_name = "user_company.html"
-
-    def get(self, request):
-        return HttpResponse(self.template_name)
-
-
-class UserCompanyVacancies(View):
-    template_name = "user_company_vacancies.html"
-
-    def get(self, request):
-        return HttpResponse(self.template_name)
-
-
-class UserCompanyJob(View):
-    template_name = "user_company_job.html"
-
-    def get(self, request, id: int):
-        return HttpResponse(self.template_name)
 
 
 def custom_404(request, exception):
