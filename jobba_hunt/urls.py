@@ -18,30 +18,30 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import re_path, path
 from django.views.generic.base import RedirectView
-from jobs.views import (
-    MainPageView,
-    VacanciesPageView,
-    SpecializationPageView,
-    CompanyPageView,
-    AllCompaniesPageView,
-    JobPageView,
-)
 
 from jobs.views import (
-    custom_404
+    CompaniesView,
+    CompanyView,
+    custom_404,
+    JobView,
+    MainView,
+    SpecializationView,
+    VacanciesView,
 )
+
+handler404 = custom_404
 
 favicon_view = RedirectView.as_view(
     url=settings.STATIC_URL + '/favicon.ico', permanent=True)
 
-
 urlpatterns = [
     re_path(r'^favicon\.ico$', favicon_view),
-    path('', MainPageView.as_view(), name='main'),
+
+    path('', MainView.as_view(), name='main'),
     path('admin/', admin.site.urls),
-    path('vacancies/', VacanciesPageView.as_view(), name='vacancies'),
-    path('jobs/cat/<str:specialization>/', SpecializationPageView.as_view(), name='specialization_detail'),
-    path('companies/', AllCompaniesPageView.as_view(), name='companies'),
-    path('companies/<int:id>/', CompanyPageView.as_view(), name='company_detail'),
-    path('jobs/<int:id>/', JobPageView.as_view(), name='job_detail'),
+    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
+    path('jobs/<int:id>/', JobView.as_view(), name='job_detail'),
+    path('jobs/cat/<str:specialization>/', SpecializationView.as_view(), name='specialization_detail'),
+    path('companies/', CompaniesView.as_view(), name='companies'),
+    path('companies/<int:id>/', CompanyView.as_view(), name='company_detail'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
