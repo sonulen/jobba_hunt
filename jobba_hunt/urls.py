@@ -23,9 +23,14 @@ from jobs.views import (
     CompaniesView,
     CompanyView,
     custom_404,
+    JobResponseView,
     JobView,
     MainView,
     SpecializationView,
+    UserCompanyJob,
+    UserCompanyVacancies,
+    UserCompanyView,
+    UserResumeView,
     VacanciesView,
 )
 
@@ -36,12 +41,16 @@ favicon_view = RedirectView.as_view(
 
 urlpatterns = [
     re_path(r'^favicon\.ico$', favicon_view),
-
     path('', MainView.as_view(), name='main'),
     path('admin/', admin.site.urls),
     path('vacancies/', VacanciesView.as_view(), name='vacancies'),
     path('jobs/<int:id>/', JobView.as_view(), name='job_detail'),
     path('jobs/cat/<str:specialization>/', SpecializationView.as_view(), name='specialization_detail'),
+    path('jobs/<int:id>/send/', JobResponseView.as_view(), name='job_response'),
     path('companies/', CompaniesView.as_view(), name='companies'),
     path('companies/<int:id>/', CompanyView.as_view(), name='company_detail'),
+    path('myresume/', UserResumeView.as_view(), name='user_resume'),
+    path('mycompany/', UserCompanyView.as_view(), name='user_company'),
+    path('mycompany/vacancies/', UserCompanyVacancies.as_view(), name='user_company_vacancies'),
+    path('mycompany/vacancies/<int:id>/', UserCompanyJob.as_view(), name='user_company_job'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
