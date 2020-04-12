@@ -1,9 +1,12 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from phone_field import PhoneField
+
 from accounts.manage import CustomUserManager
-from jobs.models import Company, Specialty
+from jobs.models import Company, Specialty, Vacancy
 
 
 class Resume(models.Model):
@@ -67,3 +70,19 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class Application(models.Model):
+    name = models.CharField(max_length=64)
+    phone_number = PhoneField(help_text='Contact phone number')
+    written_cover_letter = models.CharField(max_length=256)
+    vacancy = models.ForeignKey(Vacancy,
+                                on_delete=models.SET_NULL,
+                                related_name='applications',
+                                default=None,
+                                null=True)
+    user = models.ForeignKey(CustomUser,
+                             on_delete=models.SET_NULL,
+                             related_name='applications',
+                             default=None,
+                             null=True)
