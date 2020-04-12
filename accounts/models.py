@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
 from phone_field import PhoneField
 
 from accounts.manage import CustomUserManager
@@ -68,8 +66,15 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
     def __str__(self):
-        return self.email
+        return '{} <{}>'.format(self.get_full_name(), self.email)
 
 
 class Application(models.Model):
