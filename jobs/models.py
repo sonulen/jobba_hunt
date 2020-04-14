@@ -8,6 +8,9 @@ class Specialty(models.Model):
                               default=None,
                               null=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Company(models.Model):
     name = models.CharField(max_length=64)
@@ -18,9 +21,15 @@ class Company(models.Model):
     description = models.CharField(max_length=256)
     employee_count = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.name
+
 
 class Skills(models.Model):
     title = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.title
 
 
 class Vacancy(models.Model):
@@ -32,3 +41,6 @@ class Vacancy(models.Model):
     salary_min = models.PositiveIntegerField()
     salary_max = models.PositiveIntegerField()
     published_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return '{}  <{}>'.format(self.title, self.company)

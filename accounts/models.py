@@ -48,6 +48,9 @@ class Resume(models.Model):
     def get_full_name(self):
         return u'{0} {1}'.format(self.first_name, self.last_name)
 
+    def __str__(self):
+        return '{} <{}>'.format(self.get_full_name(), self.specialty)
+
 
 class CustomUser(AbstractUser):
     username = None
@@ -91,3 +94,6 @@ class Application(models.Model):
                              related_name='applications',
                              default=None,
                              null=True)
+
+    def __str__(self):
+        return '{} <{}>'.format(self.name, self.phone_number)
