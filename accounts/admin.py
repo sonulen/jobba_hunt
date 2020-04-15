@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from accounts.forms import CustomUserCreationForm, CustomUserChangeForm
 from accounts.models import CustomUser, Application
-from jobs.models import Company, Vacancy
+from jobs.models import Company, Vacancy, Specialty
 
 
 @admin.register(CustomUser)
@@ -29,9 +29,9 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone_number', 'user', 'vacancy')
-    search_fields = ('name', 'user', 'vacancy')
-    ordering = ('name', 'user')
+    list_display = ('full_name', 'phone_number', 'user', 'vacancy')
+    search_fields = ('full_name', 'user', 'vacancy')
+    ordering = ('full_name', 'user')
 
 
 @admin.register(Company)
@@ -46,3 +46,10 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = ('title', 'specialty', 'company', 'salary_min', 'salary_max')
     search_fields = ('title', 'specialty', 'company', 'salary_min', 'salary_max')
     ordering = ('specialty',)
+
+
+@admin.register(Specialty)
+class SpecialtyAdmin(admin.ModelAdmin):
+    list_display = ('code', 'title')
+    search_fields = ('code', 'title')
+    ordering = ('title',)

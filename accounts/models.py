@@ -4,7 +4,29 @@ from django.utils.translation import ugettext_lazy as _
 from phone_field import PhoneField
 
 from accounts.manage import CustomUserManager
-from jobs.models import Company, Specialty, Vacancy
+from jobs.models import Specialty, Vacancy
+
+
+class CustomUser(AbstractUser):
+    username = None
+    first_name = models.CharField(max_length=128, blank=False, null=False)
+    last_name = models.CharField(max_length=128, blank=False, null=False)
+    email = models.EmailField(_('email address'), unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    objects = CustomUserManager()
+
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def __str__(self):
+        return '{} <{}>'.format(self.get_full_name(), self.email)
 
 
 class Resume(models.Model):
@@ -22,8 +44,12 @@ class Resume(models.Model):
         CONSIDERING_OFFERS = 'CO', _('Рассматриваю предложения')
         LOOKING = 'LK', _('Ищу работу')
 
-    name = models.CharField(max_length=64)
-    surname = models.CharField(max_length=64)
+    # Delete default and null later
+    owner = models.OneToOneField(CustomUser,
+                                 on_delete=models.CASCADE,
+                                 related_name='resume',
+                                 default=None,
+                                 null=True)
     status = models.CharField(
         max_length=24,
         choices=Status_ready_to_work.choices,
@@ -43,57 +69,30 @@ class Resume(models.Model):
     portfolio = models.CharField(max_length=256)
 
     def get_short_name(self):
-        return self.first_name
+        return self.owner.first_name
 
     def get_full_name(self):
-        return u'{0} {1}'.format(self.first_name, self.last_name)
+        return self.owner.get_full_name
 
     def __str__(self):
         return '{} <{}>'.format(self.get_full_name(), self.specialty)
 
 
-class CustomUser(AbstractUser):
-    username = None
-    first_name = models.CharField(max_length=128, blank=False, null=False)
-    last_name = models.CharField(max_length=128, blank=False, null=False)
-    email = models.EmailField(_('email address'), unique=True)
-    company = models.OneToOneField(Company, on_delete=models.CASCADE, related_name='owner',
-                                   default=None,
-                                   null=True)
-    resume = models.OneToOneField(Resume, on_delete=models.CASCADE, related_name='owner',
-                                  default=None,
-                                  null=True)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
-    objects = CustomUserManager()
-
-    def get_full_name(self):
-        """
-        Return the first_name plus the last_name, with a space in between.
-        """
-        full_name = '%s %s' % (self.first_name, self.last_name)
-        return full_name.strip()
-
-    def __str__(self):
-        return '{} <{}>'.format(self.get_full_name(), self.email)
-
-
 class Application(models.Model):
-    name = models.CharField(max_length=64)
+    full_name = models.CharField(max_length=64)
     phone_number = PhoneField(help_text='Contact phone number')
     written_cover_letter = models.CharField(max_length=256)
+    # Delete default and null later
     vacancy = models.ForeignKey(Vacancy,
-                                on_delete=models.SET_NULL,
+                                on_delete=models.CASCADE,
                                 related_name='applications',
                                 default=None,
                                 null=True)
     user = models.ForeignKey(CustomUser,
-                             on_delete=models.SET_NULL,
+                             on_delete=models.CASCADE,
                              related_name='applications',
                              default=None,
                              null=True)
 
     def __str__(self):
-        return '{} <{}>'.format(self.name, self.phone_number)
+        return '{} <{}>'.format(self.full_name, self.phone_number)
