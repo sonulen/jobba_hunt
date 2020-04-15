@@ -31,7 +31,7 @@ class Company(models.Model):
         return self.name
 
 
-class Skills(models.Model):
+class Skill(models.Model):
     title = models.CharField(max_length=64)
 
     def __str__(self):
@@ -44,7 +44,7 @@ class Vacancy(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name='vacancies')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='vacancies')
-    skills = models.ManyToManyField(Skills, related_name='vacancies')
+    skills = models.ManyToManyField(Skill, related_name='vacancies')
     description = models.CharField(max_length=256)
     salary_min = models.PositiveIntegerField()
     salary_max = models.PositiveIntegerField()
