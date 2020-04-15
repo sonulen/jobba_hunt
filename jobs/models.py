@@ -41,10 +41,8 @@ class Skills(models.Model):
 class Vacancy(models.Model):
     title = models.CharField(max_length=64)
     specialty = models.ForeignKey(Specialty,
-                                  on_delete=models.SET_NULL,
-                                  related_name='vacancies',
-                                  default=None,
-                                  null=True)
+                                  on_delete=models.CASCADE,
+                                  related_name='vacancies')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='vacancies')
     skills = models.ManyToManyField(Skills, related_name='vacancies')
     description = models.CharField(max_length=256)

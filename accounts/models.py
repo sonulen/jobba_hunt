@@ -47,9 +47,7 @@ class Resume(models.Model):
     # Delete default and null later
     owner = models.OneToOneField(CustomUser,
                                  on_delete=models.CASCADE,
-                                 related_name='resume',
-                                 default=None,
-                                 null=True)
+                                 related_name='resume')
     status = models.CharField(
         max_length=24,
         choices=Status_ready_to_work.choices,
@@ -82,12 +80,9 @@ class Application(models.Model):
     full_name = models.CharField(max_length=64)
     phone_number = PhoneField(help_text='Contact phone number')
     written_cover_letter = models.CharField(max_length=256)
-    # Delete default and null later
     vacancy = models.ForeignKey(Vacancy,
                                 on_delete=models.CASCADE,
-                                related_name='applications',
-                                default=None,
-                                null=True)
+                                related_name='applications')
     user = models.ForeignKey(CustomUser,
                              on_delete=models.CASCADE,
                              related_name='applications',
