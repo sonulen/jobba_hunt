@@ -31,9 +31,8 @@
             <ul class="navbar-nav col-2 justify-content-end">
                 {% if user.is_authenticated %}
                 <li class="nav-item active dropdown">
-                    <a class="font-weight-bold nav-link dropdown-toggle" data-toggle="dropdown">
-                        {{ user.get_full_name }}
-                        <b class="caret"></b>
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><b
+                            class="caret">{{ user.get_full_name }}</b>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-item">
@@ -47,13 +46,13 @@
                         </li>
                         <div class="dropdown-divider"></div>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#logout">Выход</a>
+                            <a class="nav-link" href="{% url 'logout' %}">Выход</a>
                         </li>
                     </ul>
                 </li>
                 {% else %}
                 <li class="nav-item active">
-                    <a href="#login" class="nav-link font-weight-bold">Вход</a>
+                    <a href="{% url 'login' %}" class="nav-link font-weight-bold">Вход</a>
                 </li>
                 {% endif %}
 
