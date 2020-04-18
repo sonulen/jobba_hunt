@@ -36,14 +36,16 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#profile">Профиль</a>
+                            <a class="nav-link" href="{% url 'user_resume' %}">Резюме</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#resume">Резюме</a>
+                            <a class="nav-link" href="{% url 'user_company' %}">Компания</a>
                         </li>
+                        {% if user.company %}
                         <li class="dropdown-item">
-                            <a class="nav-link" href="#company">Компания</a>
+                            <a class="nav-link" href="{% url 'user_resume' %}">Вакансии</a>
                         </li>
+                        {% endif %}
                         <div class="dropdown-divider"></div>
                         <li class="dropdown-item">
                             <a class="nav-link" href="{% url 'logout' %}">Выход</a>

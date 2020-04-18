@@ -127,6 +127,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/1.11/topics/auth/customizing/#auth-custom-user
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'main'
 
 MEDIA_URL = '/media/'

@@ -1,0 +1,19 @@
+{% extends 'base_with_menu.html' %}
+{% block content %}
+
+<main class="container mt-3 pb-5">
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <section class="mt-5 card text-center">
+            <div class="card-header">
+                Мое резюме
+            </div>
+            <div class="card-body px-3 pb-4">
+                <p class="mt-2">У вас нет резюме. Хотите создать его?</p>
+                <a href="{% url 'user_resume_create' %}" class="btn btn-info btn-lg">Создать
+                    резюме</a>
+            </div>
+    </div>
+    </section>
+</main>
+
+{% endblock %}

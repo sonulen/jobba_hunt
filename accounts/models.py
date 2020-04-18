@@ -53,7 +53,7 @@ class Resume(models.Model):
         choices=Status_ready_to_work.choices,
         default=Status_ready_to_work.NOT_SPECIFIED,
     )
-    salary = models.PositiveIntegerField()
+    salary = models.PositiveIntegerField(default=0)
     specialty = models.ForeignKey(Specialty, on_delete=models.SET_NULL, related_name='resumes',
                                   default=None,
                                   null=True)
@@ -62,9 +62,9 @@ class Resume(models.Model):
         choices=Seniority_scale.choices,
         default=Seniority_scale.NOT_SPECIFIED,
     )
-    education = models.CharField(max_length=128)
-    experience = models.CharField(max_length=256)
-    portfolio = models.CharField(max_length=256)
+    education = models.CharField(max_length=128, blank=True)
+    experience = models.CharField(max_length=256, blank=True)
+    portfolio = models.CharField(max_length=256, blank=True)
 
     def get_short_name(self):
         return self.owner.first_name

@@ -10,8 +10,14 @@ from accounts.views import (
     JobResponseView,
     UserCompanyJob,
     UserCompanyVacancies,
-    UserCompanyView,
-    UserResumeView,
+    UserCompanyEmptyView,
+    UserCompanyCreateView,
+    UserCompanyEditView,
+    UserCompanyDelete,
+    UserResumeEmptyView,
+    UserResumeCreateView,
+    UserResumeEditView,
+    UserResumeDelete,
     MyLoginView,
     MySignupView,
 )
@@ -41,14 +47,24 @@ urlpatterns = [
     path('jobs/<int:id>/', JobView.as_view(), name='job_detail'),
     path('jobs/<int:id>/send', JobResponseView.as_view(), name='job_response'),
     path('jobs/cat/<str:specialization>/', SpecializationView.as_view(), name='specialization_detail'),
+    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
+    # Создание/Логин пользователя
     path('login/', MyLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('mycompany/', UserCompanyView.as_view(), name='user_company'),
+    path('signup/', MySignupView.as_view(), name='signup'),
+    # Создание резюме
+    path('myresume/empty/', UserResumeEmptyView.as_view(), name='user_resume'),
+    path('myresume/create/', UserResumeCreateView.as_view(), name='user_resume_create'),
+    path('myresume/edit/', UserResumeEditView.as_view(), name='user_resume_edit'),
+    path('myresume/delete/', UserResumeDelete.as_view(), name='user_resume_delete'),
+    #  Создание компании
+    path('mycompany/empty/', UserCompanyEmptyView.as_view(), name='user_company'),
+    path('mycompany/create/', UserCompanyCreateView.as_view(), name='user_company_create'),
+    path('mycompany/edit/', UserCompanyEditView.as_view(), name='user_company_edit'),
+    path('mycompany/delete/', UserCompanyDelete.as_view(), name='user_company_delete'),
+    # Создание вакансий в компании пользователя
     path('mycompany/vacancies/', UserCompanyVacancies.as_view(), name='user_company_vacancies'),
     path('mycompany/vacancies/<int:id>/', UserCompanyJob.as_view(), name='user_company_job'),
-    path('myresume/', UserResumeView.as_view(), name='user_resume'),
-    path('signup/', MySignupView.as_view(), name='signup'),
-    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # MEDIA URLS
