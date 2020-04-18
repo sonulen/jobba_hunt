@@ -5,16 +5,49 @@ from django.views.generic import CreateView
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
+from django.urls import reverse
 
-from accounts.forms import CustomUserCreationForm
-from accounts.models import CustomUser
+from accounts.forms import CustomUserCreationForm, ApplicationForm
+from accounts.models import CustomUser, Application
+from jobs.models import Vacancy
 
 
 class JobResponseView(View):
     template_name = "accounts/job_response.html"
 
-    def get(self, request):
-        return HttpResponse(self.template_name)
+    def create_if_new(self, request, vacancy, data):
+        application = Application.objects.filter(
+            full_name=data['full_name'],
+            phone_number=data['phone_number'],
+            written_cover_letter=data['written_cover_letter'],
+            vacancy=vacancy,
+            user=request.user,
+        ).first()
+
+        if application is None:
+            Application.objects.create(
+                full_name=data['full_name'],
+                phone_number=data['phone_number'],
+                written_cover_letter=data['written_cover_letter'],
+                vacancy=vacancy,
+                user=request.user,
+            )
+
+    def post(self, request, *args, **kwargs):
+        post_data = ApplicationForm(data=request.POST)
+        job_id = self.kwargs['id']
+
+        if post_data.is_valid():
+            data = post_data.cleaned_data
+            vacancy = Vacancy.objects.filter(pk=job_id).first()
+            self.create_if_new(request, vacancy, data)
+            return render(request, self.template_name, {
+                'user_name': request.user.get_full_name(),
+                'back_url': reverse('job_detail', args=(job_id,))
+            })
+
+        return render(request, reverse('job_detail', args=(job_id,)),
+                      {'form': post_data})
 
 
 class UserResumeView(View):

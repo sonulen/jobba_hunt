@@ -12,8 +12,9 @@ from accounts.views import (
     UserCompanyView,
     UserResumeView,
     MyLoginView,
-    MySignupView
+    MySignupView,
 )
+
 from jobs.views import (
     CompaniesView,
     CompanyView,
@@ -34,17 +35,17 @@ urlpatterns = [
     re_path(r'^favicon\.ico$', favicon_view),
     path('', MainView.as_view(), name='main'),
     path('admin/', admin.site.urls),
-    path('login/', MyLoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('signup/', MySignupView.as_view(), name='signup'),
-    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
-    path('jobs/<int:id>/', JobView.as_view(), name='job_detail'),
-    path('jobs/cat/<str:specialization>/', SpecializationView.as_view(), name='specialization_detail'),
-    path('jobs/<int:id>/send/', JobResponseView.as_view(), name='job_response'),
     path('companies/', CompaniesView.as_view(), name='companies'),
     path('companies/<int:id>/', CompanyView.as_view(), name='company_detail'),
-    path('myresume/', UserResumeView.as_view(), name='user_resume'),
+    path('jobs/<int:id>/', JobView.as_view(), name='job_detail'),
+    path('jobs/<int:id>/send', JobResponseView.as_view(), name='job_response'),
+    path('jobs/cat/<str:specialization>/', SpecializationView.as_view(), name='specialization_detail'),
+    path('login/', MyLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('mycompany/', UserCompanyView.as_view(), name='user_company'),
     path('mycompany/vacancies/', UserCompanyVacancies.as_view(), name='user_company_vacancies'),
     path('mycompany/vacancies/<int:id>/', UserCompanyJob.as_view(), name='user_company_job'),
+    path('myresume/', UserResumeView.as_view(), name='user_resume'),
+    path('signup/', MySignupView.as_view(), name='signup'),
+    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

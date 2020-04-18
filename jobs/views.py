@@ -5,6 +5,7 @@ from django.views import View
 from jobs.models import (
     Specialty, Company, Vacancy
 )
+from accounts.forms import ApplicationForm
 
 
 class MainView(View):
@@ -42,11 +43,17 @@ class JobView(View):
         if vacancy == None:
             raise Http404
 
+        if request.user is not None:
+            form = ApplicationForm(initial={'full_name': request.user.get_full_name()})
+        else:
+            form = ApplicationForm()
+
         return render(
             request,
             self.template_name,
             context={
-                "vacancy": vacancy
+                "vacancy": vacancy,
+                'form': form
             }
         )
 

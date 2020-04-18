@@ -79,7 +79,7 @@ class Resume(models.Model):
 class Application(models.Model):
     full_name = models.CharField(max_length=64)
     phone_number = PhoneField(help_text='Contact phone number')
-    written_cover_letter = models.CharField(max_length=256)
+    written_cover_letter = models.CharField(max_length=256, blank=True)
     vacancy = models.ForeignKey(Vacancy,
                                 on_delete=models.CASCADE,
                                 related_name='applications')
