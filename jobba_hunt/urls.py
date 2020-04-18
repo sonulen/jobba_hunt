@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import re_path, path
 from django.views.generic.base import RedirectView
+from django.views.static import serve
 
 from accounts.views import (
     JobResponseView,
@@ -49,3 +50,14 @@ urlpatterns = [
     path('signup/', MySignupView.as_view(), name='signup'),
     path('vacancies/', VacanciesView.as_view(), name='vacancies'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# MEDIA URLS
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$',
+            serve,
+            {'document_root': settings.MEDIA_ROOT})
+]

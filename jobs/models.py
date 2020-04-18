@@ -1,23 +1,25 @@
 from django.db import models
+from django.conf import settings
 
 
 class Specialty(models.Model):
     code = models.CharField(max_length=64)
     title = models.CharField(max_length=64)
-    picture = models.URLField(max_length=128,
-                              default=None,
-                              null=True)
+    picture = models.ImageField(upload_to=settings.MEDIA_SPECIALITY_IMAGE_DIR)
 
     def __str__(self):
         return self.title
+
+    def delete(self, *args, **kwargs):
+        # для удаления нам нужен объект стораджа, где хранится файл с аватаркой и его путь
+        self.picture.storage.delete(self.picture.path)
+        super(Specialty, self).delete(*args, **kwargs)
 
 
 class Company(models.Model):
     name = models.CharField(max_length=64)
     location = models.CharField(max_length=64)
-    logo = models.URLField(max_length=128,
-                           default=None,
-                           null=True)
+    logo = models.ImageField(upload_to=settings.MEDIA_COMPANY_IMAGE_DIR)
     description = models.CharField(max_length=256)
     employee_count = models.PositiveIntegerField()
 
@@ -29,6 +31,11 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+    def delete(self, *args, **kwargs):
+        # для удаления нам нужен объект стораджа, где хранится файл с аватаркой и его путь
+        self.logo.storage.delete(self.logo.path)
+        super(Company, self).delete(*args, **kwargs)
 
 
 class Skill(models.Model):
