@@ -1,7 +1,9 @@
+from django.db.models import Q, QuerySet
 from django.http import Http404
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import redirect, render
 from django.views import View
 
+from accounts.forms import ApplicationForm
 from jobs.models import (
     Specialty, Company, Vacancy
 )
@@ -11,10 +13,19 @@ class MainView(View):
     template_name = "jobs/main.html"
 
     def get(self, request):
+        example_keywords_for_search = [
+            "Python",
+            "Flask",
+            "Django",
+            "Парсинг",
+            "ML",
+        ]
+
         return render(
             request,
             self.template_name,
             context={
+                "example_keywords": example_keywords_for_search,
                 "specialties": Specialty.objects.all(),
                 "companies": Company.objects.all()
             }
@@ -42,11 +53,17 @@ class JobView(View):
         if vacancy == None:
             raise Http404
 
+        if request.user.is_authenticated:
+            form = ApplicationForm(initial={'full_name': request.user.get_full_name()})
+        else:
+            form = ApplicationForm()
+
         return render(
             request,
             self.template_name,
             context={
-                "vacancy": vacancy
+                "vacancy": vacancy,
+                'form': form
             }
         )
 
@@ -68,13 +85,6 @@ class SpecializationView(View):
                 "vacancies": Vacancy.objects.filter(specialty__code=specialization).all().order_by('-published_at')
             }
         )
-
-
-class JobResponseView(View):
-    template_name = "job_response.html"
-
-    def get(self, request):
-        return HttpResponse(self.template_name)
 
 
 class CompaniesView(View):
@@ -108,32 +118,49 @@ class CompanyView(View):
         )
 
 
-class UserResumeView(View):
-    template_name = "user_resume.html"
+class VacanciesSearchView(View):
+    template_name = "jobs/search.html"
+
+    def find_all_vacancies(self, keyword: str) -> QuerySet:
+        return Vacancy.objects.filter(
+            Q(title__contains=keyword) |
+            Q(company__name__contains=keyword) |
+            Q(specialty__title__contains=keyword) |
+            Q(skills__title__contains=keyword)
+        ).all()
+
+    def get(self, request, keyword: str):
+        vacancies = self.find_all_vacancies(keyword)
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                "keyword": keyword,
+                "vacancies": vacancies
+            }
+        )
+
+    def post(self, request, *args, **kwargs):
+        keyword = request.POST.get("keyword", "")
+
+        print(request.POST)
+        print(keyword)
+
+        if keyword:
+            return redirect('search_vacancies', keyword=keyword)
+
+        return redirect('main')
+
+
+class AboutView(View):
+    template_name = "jobs/about.html"
 
     def get(self, request):
-        return HttpResponse(self.template_name)
-
-
-class UserCompanyView(View):
-    template_name = "user_company.html"
-
-    def get(self, request):
-        return HttpResponse(self.template_name)
-
-
-class UserCompanyVacancies(View):
-    template_name = "user_company_vacancies.html"
-
-    def get(self, request):
-        return HttpResponse(self.template_name)
-
-
-class UserCompanyJob(View):
-    template_name = "user_company_job.html"
-
-    def get(self, request, id: int):
-        return HttpResponse(self.template_name)
+        return render(
+            request,
+            self.template_name,
+        )
 
 
 def custom_404(request, exception):

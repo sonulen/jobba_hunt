@@ -1,0 +1,31 @@
+{% extends 'base_with_menu.html' %}
+{% block content %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+<main class="container mt-3">
+    <div class="col-8 col-lg-4 offset-2 offset-lg-4">
+        <div class="text-center mt-5 b-1">
+            <img class="mb-4" src="{% static "menu/jobs.svg" %}" alt="" width="92" height="92">
+            <h1 class="h3 mb-3 font-weight-normal">Jobba Hunt</h1>
+            <p class="h5 font-weight-light">Создайте аккаунт</p>
+        </div>
+
+        <div class="mt-5 form-label-group">
+            <form method="post" action="">
+                {% csrf_token %}
+                <table>{{ form|crispy }}</table>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+
+        <div class="mt-5">
+            <p class="text-center">Уже есть аккаунт?</p>
+            <a class="btn btn-success btn-lg btn-block" href="{% url 'login' %}" role="button">Войти</a>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base_with_menu.html' %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<main class="container mt-3">
+    <div class="col-8 col-lg-4 offset-2 offset-lg-4">
+        <div class="text-center mt-5 b-1">
+            <h1 class="h3 mb-3 font-weight-normal">Jobba hunt</h1>
+            <p class="h5 font-weight-light">Войдите, чтобы начать охоту</p>
+            <p class="h5 font-weight-light">за работой своей мечты!</p>
+        </div>
+
+        <div class="mt-5 form-label-group">
+            <form method="post" action="">
+                {% csrf_token %}
+                <table>{{ form|crispy }}</table>
+                <button type="submit" class="btn btn-success btn-lg btn-block">Вход</button>
+            </form>
+        </div>
+
+        <div class="mt-5">
+            <p class="text-center">Нет аккаунта?</p>
+            <a class="btn btn-primary btn-lg btn-block" href="{% url 'signup' %}" role="button">Регистрация</a>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

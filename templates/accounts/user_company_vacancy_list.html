@@ -1,0 +1,68 @@
+{% extends 'base_with_menu.html' %}
+{% block content %}
+
+{% load static %}
+
+<main class="container mt-3 pb-5">
+    <div class="row mt-5">
+        <div class="col-12 col-lg-4">
+            <aside class="pt-3 pb-4 px-4 mb-5 card">
+                <h1 class="h4 pt-2 pb-2">{{ company.name }}</h1>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" href="{% url 'user_company' %}">1. Информация о&nbsp;компании</a>
+                    <a class="nav-link active" href="{% url 'user_company_vacancies' %}">2. Вакансии</a>
+                </div>
+            </aside>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-body px-4 pb-4">
+                    <section class="tab-pane fade show active">
+                        <div class="text-center mt-3 b-1">
+                            <p class="h5 font-weight-light">Вакансии</p>
+                        </div>
+
+                        {% for vacancy in vacancies %}
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <a href="{% url 'job_detail' vacancy.pk %}"
+                                    class="mb-1 card-title text-dark font-weight-bold">{{ vacancy.title }}</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-6 col-lg-8">
+                                        <p class="mb-1">
+                                            <p>Специализация:
+                                                <a
+                                                    href="{% url 'specialization_detail' vacancy.specialty.code %}">{{ vacancy.specialty }}</a>
+                                            </p>
+                                        </p>
+                                        <p>От {{ vacancy.salary_min }} руб. до {{ vacancy.salary_max }} руб.</p>
+                                        <a href="{% url 'user_company_job_edit' vacancy.pk %}"
+                                            class="text-info">Откликов: {{ vacancy.applications.count }} </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-6 col-lg-4 text-right">
+                                        <a href="{% url 'user_company_job_edit' vacancy.pk %}"
+                                            class="btn btn-outline-info">Изменить</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+
+                        <div class="pt-3">
+                            <a href="{% url 'user_company_job_create' %}" class="btn btn-info btn-lg">Создать
+                                вакансию</a>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

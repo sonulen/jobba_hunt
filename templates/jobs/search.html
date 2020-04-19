@@ -1,0 +1,9 @@
+{% extends 'jobs/base_with_menu_and_vacancies_list.html' %}
+{% block header %}
+<h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;"><strong>Поиск вакансии</strong></h1>
+<h3 class="h3 text-center mx-auto mt-2 pt-5" style="font-size: 30px;">По ключевому слову:
+    <a class="text-dark border-bottom border-dark m-1 text-decoration-none">
+        {{ keyword }}</a>
+</h3>
+<p class="text-center pt-3"> {{ vacancies.count }} вакансий</p>
+{% endblock %}

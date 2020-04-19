@@ -25,16 +25,40 @@
                     <a class=" nav-link" href="{% url 'companies' %}">Компании</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">О проекте</a>
+                    <a class="nav-link" href="{% url 'about' %}">О проекте</a>
                 </li>
             </ul>
             <ul class="navbar-nav col-2 justify-content-end">
-                <li class="nav-item active">
-                    <a href="#" class="nav-link font-weight-bold">Вход</a>
+                {% if user.is_authenticated %}
+                <li class="nav-item active dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><b
+                            class="caret">{{ user.get_full_name }}</b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="{% url 'user_resume' %}">Резюме</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="{% url 'user_company' %}">Компания</a>
+                        </li>
+                        {% if user.company %}
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="{% url 'user_company_vacancies' %}">Вакансии</a>
+                        </li>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Выход</a>
+                        </li>
+                    </ul>
                 </li>
+                {% else %}
+                <li class="nav-item active">
+                    <a href="{% url 'login' %}" class="nav-link font-weight-bold">Вход</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
-
     </nav>
 </header>
 

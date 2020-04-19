@@ -1,36 +1,38 @@
-"""jobba_hunt URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import re_path, path
 from django.views.generic.base import RedirectView
+from django.views.static import serve
+
+from accounts.views import (
+    JobResponseView,
+    MyLoginView,
+    MySignupView,
+    UserCompanyCreateJob,
+    UserCompanyCreateView,
+    UserCompanyDelete,
+    UserCompanyDeleteJob,
+    UserCompanyEditJob,
+    UserCompanyEditView,
+    UserCompanyEmptyView,
+    UserCompanyVacancies,
+    UserResumeCreateView,
+    UserResumeDelete,
+    UserResumeEditView,
+    UserResumeEmptyView,
+)
 
 from jobs.views import (
+    AboutView,
     CompaniesView,
     CompanyView,
     custom_404,
-    JobResponseView,
     JobView,
     MainView,
     SpecializationView,
-    UserCompanyJob,
-    UserCompanyVacancies,
-    UserCompanyView,
-    UserResumeView,
+    VacanciesSearchView,
     VacanciesView,
 )
 
@@ -43,14 +45,44 @@ urlpatterns = [
     re_path(r'^favicon\.ico$', favicon_view),
     path('', MainView.as_view(), name='main'),
     path('admin/', admin.site.urls),
-    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
-    path('jobs/<int:id>/', JobView.as_view(), name='job_detail'),
-    path('jobs/cat/<str:specialization>/', SpecializationView.as_view(), name='specialization_detail'),
-    path('jobs/<int:id>/send/', JobResponseView.as_view(), name='job_response'),
     path('companies/', CompaniesView.as_view(), name='companies'),
     path('companies/<int:id>/', CompanyView.as_view(), name='company_detail'),
-    path('myresume/', UserResumeView.as_view(), name='user_resume'),
-    path('mycompany/', UserCompanyView.as_view(), name='user_company'),
+    path('jobs/<int:id>/', JobView.as_view(), name='job_detail'),
+    path('jobs/<int:id>/send', JobResponseView.as_view(), name='job_response'),
+    path('jobs/cat/<str:specialization>/', SpecializationView.as_view(), name='specialization_detail'),
+    path('vacancies/', VacanciesView.as_view(), name='vacancies'),
+    path('vacancies/search/<str:keyword>/', VacanciesSearchView.as_view(), name='search_vacancies'),
+    path('vacancies/search/', VacanciesSearchView.as_view(), name='search_vacancies'),
+    # Создание/Логин пользователя
+    path('login/', MyLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('signup/', MySignupView.as_view(), name='signup'),
+    # Создание резюме
+    path('myresume/empty/', UserResumeEmptyView.as_view(), name='user_resume'),
+    path('myresume/create/', UserResumeCreateView.as_view(), name='user_resume_create'),
+    path('myresume/edit/', UserResumeEditView.as_view(), name='user_resume_edit'),
+    path('myresume/delete/', UserResumeDelete.as_view(), name='user_resume_delete'),
+    #  Создание компании
+    path('mycompany/empty/', UserCompanyEmptyView.as_view(), name='user_company'),
+    path('mycompany/create/', UserCompanyCreateView.as_view(), name='user_company_create'),
+    path('mycompany/edit/', UserCompanyEditView.as_view(), name='user_company_edit'),
+    path('mycompany/delete/', UserCompanyDelete.as_view(), name='user_company_delete'),
+    # Создание вакансий в компании пользователя
     path('mycompany/vacancies/', UserCompanyVacancies.as_view(), name='user_company_vacancies'),
-    path('mycompany/vacancies/<int:id>/', UserCompanyJob.as_view(), name='user_company_job'),
+    path('mycompany/vacancies/<int:id>/', UserCompanyEditJob.as_view(), name='user_company_job_edit'),
+    path('mycompany/vacancies/create/', UserCompanyCreateJob.as_view(), name='user_company_job_create'),
+    path('mycompany/vacancies/<int:id>/delete', UserCompanyDeleteJob.as_view(),
+         name='user_company_job_delete'),
+    path('about/', AboutView.as_view(), name='about'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# MEDIA URLS
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$',
+            serve,
+            {'document_root': settings.MEDIA_ROOT})
+]
