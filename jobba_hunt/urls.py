@@ -32,7 +32,8 @@ from jobs.views import (
     MainView,
     SpecializationView,
     VacanciesView,
-    VacanciesSearchView
+    VacanciesSearchView,
+    AboutView
 )
 
 handler404 = custom_404
@@ -72,7 +73,7 @@ urlpatterns = [
     path('mycompany/vacancies/<int:id>/', UserCompanyEditJob.as_view(), name='user_company_job_edit'),
     path('mycompany/vacancies/create/', UserCompanyCreateJob.as_view(), name='user_company_job_create'),
     path('mycompany/vacancies/<int:id>/delete', UserCompanyDeleteJob.as_view(), name='user_company_job_delete'),
-
+    path('about/', AboutView.as_view(), name='about'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # MEDIA URLS

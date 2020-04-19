@@ -17,6 +17,10 @@
                     <h1 class="h2 mt-4 font-weight-bold">{{ vacancy.title }}</h1>
                     <p class="m-0 pl-3">{{ vacancy.salary_min }} – {{ vacancy.salary_max }} Р</p>
                 </div>
+                <div class="py-2">Специализация:
+                    <a href="{% url 'specialization_detail' vacancy.specialty.code %}"
+                        class=" pb-2">{{ vacancy.specialty }}</a>
+                </div>
                 <p class="mt-2">
                     {% for skill in vacancy.skills.all %}
                     {{ skill.title }}

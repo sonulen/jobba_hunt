@@ -16,7 +16,11 @@
                                 <a href="{% url 'job_detail' vacancy.pk %}">
                                     <h2 class="h2 pb-2">{{ vacancy.title }}</h2>
                                 </a>
-                                <p class="mb-2">
+                                <div class="py-2">Специализация:
+                                    <a href="{% url 'specialization_detail' vacancy.specialty.code %}"
+                                        class=" pb-2">{{ vacancy.specialty }}</a>
+                                </div>
+                                <p class="mb-2 text-dark">
                                     {% for skill in vacancy.skills.all %}
                                     {{ skill.title }}
                                     {% endfor %}

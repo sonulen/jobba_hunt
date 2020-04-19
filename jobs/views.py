@@ -155,5 +155,16 @@ class VacanciesSearchView(View):
         return redirect('main')
 
 
+class AboutView(View):
+    template_name = "jobs/about.html"
+
+    def get(self, request):
+
+        return render(
+            request,
+            self.template_name,
+        )
+
+
 def custom_404(request, exception):
     return render(request, '404.html')

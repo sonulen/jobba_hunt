@@ -16,6 +16,14 @@ class CompanyForm(forms.ModelForm):
             'employee_count',
         )
 
+        labels = {
+            'name': "Название",
+            'location': "Локация",
+            'logo': "Логотип",
+            'description': "Описание",
+            'employee_count': "Количество сотрудников",
+        }
+
 
 class VacancyForm(forms.ModelForm):
     class Meta:
@@ -27,3 +35,11 @@ class VacancyForm(forms.ModelForm):
             'salary_min',
             'salary_max',
         )
+
+        labels = {
+            'title': "Название",
+            'specialty': "Специальность",
+            'description': "Описание",
+            'salary_min': "Зарплата от",
+            'salary_max': "Зарплата до",
+        }
