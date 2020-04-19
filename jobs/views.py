@@ -55,7 +55,7 @@ class JobView(View):
         if vacancy == None:
             raise Http404
 
-        if request.user is not None:
+        if request.user.is_authenticated:
             form = ApplicationForm(initial={'full_name': request.user.get_full_name()})
         else:
             form = ApplicationForm()

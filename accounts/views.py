@@ -20,12 +20,17 @@ class JobResponseView(View):
     template_name = "accounts/job_response.html"
 
     def create_if_new(self, request, vacancy, data):
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            user = None
+
         application = Application.objects.filter(
             full_name=data['full_name'],
             phone_number=data['phone_number'],
             written_cover_letter=data['written_cover_letter'],
             vacancy=vacancy,
-            user=request.user,
+            user=user,
         ).first()
 
         if application is None:
@@ -34,7 +39,7 @@ class JobResponseView(View):
                 phone_number=data['phone_number'],
                 written_cover_letter=data['written_cover_letter'],
                 vacancy=vacancy,
-                user=request.user,
+                user=user,
             )
 
     def post(self, request, *args, **kwargs):
@@ -46,7 +51,7 @@ class JobResponseView(View):
             vacancy = Vacancy.objects.filter(pk=job_id).first()
             self.create_if_new(request, vacancy, data)
             return render(request, self.template_name, {
-                'user_name': request.user.get_full_name(),
+                'user_name': data['full_name'],
                 'back_url': reverse('job_detail', args=(job_id,))
             })
 
