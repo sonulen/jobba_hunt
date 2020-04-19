@@ -1,6 +1,8 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
+from django.db.models import QuerySet
+from django.db.models import Q
 
 from jobs.models import (
     Specialty, Company, Vacancy
@@ -12,10 +14,20 @@ class MainView(View):
     template_name = "jobs/main.html"
 
     def get(self, request):
+
+        example_keywords_for_search = [
+            "Python",
+            "Flask",
+            "Django",
+            "Парсинг",
+            "ML",
+        ]
+
         return render(
             request,
             self.template_name,
             context={
+                "example_keywords": example_keywords_for_search,
                 "specialties": Specialty.objects.all(),
                 "companies": Company.objects.all()
             }
@@ -106,6 +118,41 @@ class CompanyView(View):
                 "vacancies": Vacancy.objects.filter(company__pk=id).all().order_by('-published_at')
             }
         )
+
+
+class VacanciesSearchView(View):
+    template_name = "jobs/search.html"
+
+    def find_all_vacancies(self, keyword: str) -> QuerySet:
+        return Vacancy.objects.filter(
+            Q(title__contains=keyword) |
+            Q(company__name__contains=keyword) |
+            Q(specialty__title__contains=keyword) |
+            Q(skills__title__contains=keyword)
+        ).all()
+
+    def get(self, request, keyword: str):
+        vacancies = self.find_all_vacancies(keyword)
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                "keyword": keyword,
+                "vacancies": vacancies
+            }
+        )
+
+    def post(self, request, *args, **kwargs):
+        keyword = request.POST.get("keyword", "")
+
+        print(request.POST)
+        print(keyword)
+
+        if keyword:
+            return redirect('search_vacancies', keyword=keyword)
+
+        return redirect('main')
 
 
 def custom_404(request, exception):

@@ -292,6 +292,7 @@ class UserCompanyEditView(View):
             self.template_name,
             context={
                 'form': post_data,
+                'logo_url': request.user.company.logo.url,
             }
         )
 
@@ -373,9 +374,11 @@ class UserCompanyEditJob(View):
                 request,
                 self.template_name,
                 context={
-                    'vacancy_id': vacancy_pk,
+                    'applications': vacancy.applications.all(),
+                    'company': request.user.company,
                     'form': post_data,
-                    'updated': True
+                    'updated': True,
+                    'vacancy_id': vacancy_pk,
                 }
             )
 
@@ -383,8 +386,10 @@ class UserCompanyEditJob(View):
             request,
             self.template_name,
             context={
-                'vacancy_id': vacancy_pk,
+                'applications': vacancy.applications.all(),
+                'company': request.user.company,
                 'form': post_data,
+                'vacancy_id': vacancy_pk,
             }
         )
 

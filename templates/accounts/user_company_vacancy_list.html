@@ -18,7 +18,9 @@
             <div class="card">
                 <div class="card-body px-4 pb-4">
                     <section class="tab-pane fade show active">
-                        <h2 class="h4 pt-2 pb-3">Вакансии</h2>
+                        <div class="text-center mt-3 b-1">
+                            <p class="h5 font-weight-light">Вакансии</p>
+                        </div>
 
                         {% for vacancy in vacancies %}
                         <div class="card mt-3">
@@ -35,7 +37,8 @@
                                             </p>
                                         </p>
                                         <p>От {{ vacancy.salary_min }} руб. до {{ vacancy.salary_max }} руб.</p>
-                                        <p class="text-info">Откликов: {{ vacancy.applications.count }} </p>
+                                        <a href="{% url 'user_company_job_edit' vacancy.pk %}"
+                                            class="text-info">Откликов: {{ vacancy.applications.count }} </a>
                                         </p>
                                     </div>
                                     <div class="col-6 col-lg-4 text-right">
