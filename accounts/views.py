@@ -1,14 +1,12 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.shortcuts import HttpResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import CreateView
-from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-
 
 from accounts.forms import CustomUserCreationForm, ApplicationForm, ResumeForm
 from accounts.models import CustomUser, Application, Resume
@@ -318,7 +316,6 @@ class UserCompanyVacancies(View):
 
     @method_decorator(login_required)
     def get(self, request):
-
         vacancies = request.user.company.vacancies
 
         return render(

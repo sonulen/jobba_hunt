@@ -7,7 +7,6 @@ import phone_field.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('jobs', '0001_initial'),
         ('accounts', '0003_auto_20200412_1607'),
@@ -21,8 +20,10 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=64)),
                 ('phone_number', phone_field.models.PhoneField(help_text='Contact phone number', max_length=31)),
                 ('written_cover_letter', models.CharField(max_length=256)),
-                ('user', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='applications', to=settings.AUTH_USER_MODEL)),
-                ('vacancy', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='applications', to='jobs.Vacancy')),
+                ('user', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                           related_name='applications', to=settings.AUTH_USER_MODEL)),
+                ('vacancy', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                              related_name='applications', to='jobs.Vacancy')),
             ],
         ),
     ]

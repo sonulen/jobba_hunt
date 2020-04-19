@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('jobs', '0002_auto_20200415_1851'),
         ('accounts', '0004_application'),
@@ -37,16 +36,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='resume',
             name='owner',
-            field=models.OneToOneField(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='resume', to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(default=None, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                       related_name='resume', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='application',
             name='user',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='applications', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='applications', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='application',
             name='vacancy',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='applications', to='jobs.Vacancy'),
+            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='applications', to='jobs.Vacancy'),
         ),
     ]
