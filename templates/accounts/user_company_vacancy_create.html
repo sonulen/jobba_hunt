@@ -1,0 +1,42 @@
+{% extends 'base_with_menu.html' %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<main class="container mt-3 pb-5">
+    <div class="row mt-5">
+        <div class="col-12 col-lg-4">
+            <aside class="pt-3 pb-4 px-4 mb-5 card">
+                <h1 class="h4 pt-2 pb-2">{{ company.name }}</h1>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" href="{% url 'user_company' %}">1. Информация о&nbsp;компании</a>
+                    <a class="nav-link active" href="#">2. Вакансии</a>
+                    <a class="nav-link pt-2" href="#">3. Отклики</a>
+                </div>
+            </aside>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-body px-4 pb-4">
+                    <section class="tab-pane fade show active">
+                        <div class="text-center mt-5 b-1">
+                            <p class="h5 font-weight-light">Создание вакансии</p>
+                        </div>
+
+                        <div class="mt-3 form-label-group">
+                            <form method="post" action="{% url 'user_company_job_create' %}">
+                                {% csrf_token %}
+                                <table>{{ form|crispy }}</table>
+                                <button type="submit" class="btn btn-success btn-lg btn-block">Сохранить
+                                    вакансию</button>
+                            </form>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

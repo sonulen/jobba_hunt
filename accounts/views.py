@@ -12,8 +12,8 @@ from django.utils.decorators import method_decorator
 
 from accounts.forms import CustomUserCreationForm, ApplicationForm, ResumeForm
 from accounts.models import CustomUser, Application, Resume
-from jobs.forms import CompanyForm
-from jobs.models import Vacancy, Company
+from jobs.forms import CompanyForm, VacancyForm
+from jobs.models import Vacancy, Company, Specialty
 
 
 class JobResponseView(View):
@@ -231,7 +231,6 @@ class UserCompanyCreateView(View):
 
             return redirect('user_company_edit')
 
-        print("INVALID DATA")
         return render(request, self.template_name, {'form': post_data})
 
 
@@ -309,19 +308,133 @@ class UserCompanyDelete(View):
 
 
 class UserCompanyVacancies(View):
-    template_name = "accounts/user_company_vacancies.html"
+    template_name = "accounts/user_company_vacancy_list.html"
 
     @method_decorator(login_required)
     def get(self, request):
-        return HttpResponse(self.template_name)
+
+        vacancies = request.user.company.vacancies
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                'company': request.user.company,
+                'vacancies': vacancies.all()
+            }
+        )
 
 
-class UserCompanyJob(View):
-    template_name = "accounts/user_company_job.html"
+class UserCompanyEditJob(View):
+    template_name = "accounts/user_company_vacancy_edit.html"
 
     @method_decorator(login_required)
     def get(self, request, id: int):
-        return HttpResponse(self.template_name)
+        vacancy = Vacancy.objects.filter(pk=id).first()
+
+        form = VacancyForm(initial={
+            'title': vacancy.title,
+            'specialty': vacancy.specialty,
+            'company': vacancy.company,
+            'skills': vacancy.skills,
+            'description': vacancy.description,
+            'salary_min': vacancy.salary_min,
+            'salary_max': vacancy.salary_max,
+        })
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                'vacancy_id': id,
+                'company': request.user.company,
+                'applications': vacancy.applications.all(),
+                'form': form,
+            }
+        )
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        post_data = VacancyForm(request.POST)
+
+        vacancy_pk = self.kwargs['id']
+        vacancy = Vacancy.objects.filter(pk=vacancy_pk).first()
+
+        if post_data.is_valid():
+            data = post_data.cleaned_data
+            vacancy.title = data['title']
+            vacancy.specialty = Specialty.objects.filter(title=data['specialty']).first()
+            vacancy.description = data['description']
+            vacancy.salary_min = data['salary_min']
+            vacancy.salary_max = data['salary_max']
+            vacancy.save()
+
+            return render(
+                request,
+                self.template_name,
+                context={
+                    'vacancy_id': vacancy_pk,
+                    'form': post_data,
+                    'updated': True
+                }
+            )
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                'vacancy_id': vacancy_pk,
+                'form': post_data,
+            }
+        )
+
+
+class UserCompanyCreateJob(View):
+    template_name = "accounts/user_company_vacancy_create.html"
+
+    @method_decorator(login_required)
+    def get(self, request):
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                'form': VacancyForm(),
+            }
+        )
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        if not hasattr(request.user, 'company'):
+            return redirect('user_company')
+
+        post_data = VacancyForm(request.POST)
+
+        if post_data.is_valid():
+            data = post_data.cleaned_data
+
+            Vacancy.objects.create(
+                title=data['title'],
+                specialty=data['specialty'],
+                company=request.user.company,
+                description=data['description'],
+                salary_min=data['salary_min'],
+                salary_max=data['salary_max'],
+            )
+
+            return redirect('user_company_vacancies')
+
+        return render(request, self.template_name, {'form': post_data})
+
+
+class UserCompanyDeleteJob(View):
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        vacancy_pk = self.kwargs['id']
+
+        Vacancy.objects.filter(pk=vacancy_pk).delete()
+
+        return redirect('user_company_vacancies')
 
 
 class MyLoginView(LoginView):

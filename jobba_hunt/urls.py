@@ -8,18 +8,20 @@ from django.views.static import serve
 
 from accounts.views import (
     JobResponseView,
-    UserCompanyJob,
-    UserCompanyVacancies,
-    UserCompanyEmptyView,
-    UserCompanyCreateView,
-    UserCompanyEditView,
-    UserCompanyDelete,
-    UserResumeEmptyView,
-    UserResumeCreateView,
-    UserResumeEditView,
-    UserResumeDelete,
     MyLoginView,
     MySignupView,
+    UserCompanyCreateView,
+    UserCompanyDelete,
+    UserCompanyEditView,
+    UserCompanyEmptyView,
+    UserCompanyDeleteJob,
+    UserCompanyEditJob,
+    UserCompanyCreateJob,
+    UserCompanyVacancies,
+    UserResumeCreateView,
+    UserResumeDelete,
+    UserResumeEditView,
+    UserResumeEmptyView,
 )
 
 from jobs.views import (
@@ -64,7 +66,9 @@ urlpatterns = [
     path('mycompany/delete/', UserCompanyDelete.as_view(), name='user_company_delete'),
     # Создание вакансий в компании пользователя
     path('mycompany/vacancies/', UserCompanyVacancies.as_view(), name='user_company_vacancies'),
-    path('mycompany/vacancies/<int:id>/', UserCompanyJob.as_view(), name='user_company_job'),
+    path('mycompany/vacancies/<int:id>/', UserCompanyEditJob.as_view(), name='user_company_job_edit'),
+    path('mycompany/vacancies/create/', UserCompanyCreateJob.as_view(), name='user_company_job_create'),
+    path('mycompany/vacancies/<int:id>/delete', UserCompanyDeleteJob.as_view(), name='user_company_job_delete'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # MEDIA URLS
