@@ -6,8 +6,28 @@
 * Страница специализации
 * Страница компании
 * Страница вакансии
+* Кабинет пользователя
+* Компания пользователя
+* Вакансии компании
+* Login/logout
 
-![MVP](mvp.png)
+Главная страница:  
+![](readme_images/Main.png)
+
+Страница компании:  
+![](readme_images/company.png)
+
+Страница вакансий компании:  
+![](readme_images/company_vacancies.png)
+
+Страница редактирования вакансии:  
+![](readme_images/vacancy_edit.png)
+
+Страница вакансии:  
+![](readme_images/job.png)
+
+Поиск:  
+![](readme_images/search.png)
 
 ### Внимание
 
