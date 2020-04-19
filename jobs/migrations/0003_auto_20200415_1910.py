@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('jobs', '0002_auto_20200415_1851'),
     ]
@@ -14,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='vacancy',
             name='specialty',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies', to='jobs.Specialty'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies',
+                                    to='jobs.Specialty'),
         ),
     ]

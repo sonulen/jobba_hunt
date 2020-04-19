@@ -1,20 +1,19 @@
+from django.db.models import Q
+from django.db.models import QuerySet
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.views import View
-from django.db.models import QuerySet
-from django.db.models import Q
 
+from accounts.forms import ApplicationForm
 from jobs.models import (
     Specialty, Company, Vacancy
 )
-from accounts.forms import ApplicationForm
 
 
 class MainView(View):
     template_name = "jobs/main.html"
 
     def get(self, request):
-
         example_keywords_for_search = [
             "Python",
             "Flask",
@@ -159,7 +158,6 @@ class AboutView(View):
     template_name = "jobs/about.html"
 
     def get(self, request):
-
         return render(
             request,
             self.template_name,

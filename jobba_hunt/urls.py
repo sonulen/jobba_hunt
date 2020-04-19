@@ -10,13 +10,13 @@ from accounts.views import (
     JobResponseView,
     MyLoginView,
     MySignupView,
+    UserCompanyCreateJob,
     UserCompanyCreateView,
     UserCompanyDelete,
-    UserCompanyEditView,
-    UserCompanyEmptyView,
     UserCompanyDeleteJob,
     UserCompanyEditJob,
-    UserCompanyCreateJob,
+    UserCompanyEditView,
+    UserCompanyEmptyView,
     UserCompanyVacancies,
     UserResumeCreateView,
     UserResumeDelete,
@@ -25,22 +25,21 @@ from accounts.views import (
 )
 
 from jobs.views import (
+    AboutView,
     CompaniesView,
     CompanyView,
     custom_404,
     JobView,
     MainView,
     SpecializationView,
-    VacanciesView,
     VacanciesSearchView,
-    AboutView
+    VacanciesView,
 )
 
 handler404 = custom_404
 
 favicon_view = RedirectView.as_view(
     url=settings.STATIC_URL + '/favicon.ico', permanent=True)
-
 
 urlpatterns = [
     re_path(r'^favicon\.ico$', favicon_view),
@@ -72,7 +71,8 @@ urlpatterns = [
     path('mycompany/vacancies/', UserCompanyVacancies.as_view(), name='user_company_vacancies'),
     path('mycompany/vacancies/<int:id>/', UserCompanyEditJob.as_view(), name='user_company_job_edit'),
     path('mycompany/vacancies/create/', UserCompanyCreateJob.as_view(), name='user_company_job_create'),
-    path('mycompany/vacancies/<int:id>/delete', UserCompanyDeleteJob.as_view(), name='user_company_job_delete'),
+    path('mycompany/vacancies/<int:id>/delete', UserCompanyDeleteJob.as_view(),
+         name='user_company_job_delete'),
     path('about/', AboutView.as_view(), name='about'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

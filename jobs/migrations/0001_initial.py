@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -48,9 +47,11 @@ class Migration(migrations.Migration):
                 ('salary_min', models.PositiveIntegerField()),
                 ('salary_max', models.PositiveIntegerField()),
                 ('published_at', models.DateField(auto_now_add=True)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies', to='jobs.Company')),
+                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies',
+                                              to='jobs.Company')),
                 ('skills', models.ManyToManyField(related_name='vacancies', to='jobs.Skills')),
-                ('specialty', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies', to='jobs.Specialty')),
+                ('specialty', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='vacancies',
+                                                to='jobs.Specialty')),
             ],
         ),
     ]

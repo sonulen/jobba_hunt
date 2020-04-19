@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('jobs', '0004_auto_20200415_1913'),
     ]
@@ -13,13 +12,17 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='company',
             name='logo',
-            field=models.ImageField(default='https://preview.redd.it/cqxp2xypqo941.jpg?auto=webp&s=f1475a3fa74d38c239550f77718e6eefd1269dfb', upload_to='company_images'),
+            field=models.ImageField(
+                default='https://preview.redd.it/cqxp2xypqo941.jpg?auto=webp&s=f1475a3fa74d38c239550f77718e6eefd1269dfb',
+                upload_to='company_images'),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='specialty',
             name='picture',
-            field=models.ImageField(default='https://preview.redd.it/cqxp2xypqo941.jpg?auto=webp&s=f1475a3fa74d38c239550f77718e6eefd1269dfb', upload_to='speciality_images'),
+            field=models.ImageField(
+                default='https://preview.redd.it/cqxp2xypqo941.jpg?auto=webp&s=f1475a3fa74d38c239550f77718e6eefd1269dfb',
+                upload_to='speciality_images'),
             preserve_default=False,
         ),
     ]

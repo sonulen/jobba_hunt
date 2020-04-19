@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('jobs', '0001_initial'),
@@ -16,11 +15,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='company',
             name='owner',
-            field=models.OneToOneField(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='company', to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(default=None, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                       related_name='company', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='vacancy',
             name='specialty',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='vacancies', to='jobs.Specialty'),
+            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='vacancies', to='jobs.Specialty'),
         ),
     ]
